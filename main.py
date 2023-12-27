@@ -1,6 +1,7 @@
 import discord
 import os
 from dotenv import load_dotenv
+import dicemath
 
 load_dotenv()
 
@@ -29,11 +30,19 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     print(f"I've received a message: {message.content}")
-    # CHECKS IF THE MESSAGE SENT IS "HELLO"
-    if message.content == "hello":
-        print("Hello recieved")
+    # Splits the message
+    split_message = message.content.split(" ")
+    roll_command = False
+    if split_message[0] == "-roll":
+        subsplit = split_message[1].split("d")
+        quantity = int(subsplit[0])
+        sides = int(subsplit[1])
+
+        #Initializes the expected dice and rolls them
+        dice = dicemath.Dice(quantity, sides)
+        result = dice.roll_dice()
         # SENDS BACK A MESSAGE TO THE CHANNEL.
-        await message.channel.send("get fucked")
+        await message.channel.send(f"Results: {result}")
 
 
 
