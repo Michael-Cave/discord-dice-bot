@@ -39,10 +39,17 @@ async def on_message(message):
         sides = int(subsplit[1])
 
         #Initializes the expected dice and rolls them
-        dice = dicemath.Dice(quantity, sides)
-        result = dice.roll_dice()
-        # SENDS BACK A MESSAGE TO THE CHANNEL.
-        await message.channel.send(f"Results: {result}")
+        if len(split_message) > 2:
+            if split_message[2] == "Shadowrun":
+                dice = dicemath.Shadowrun(quantity, sides)
+                result = dice.roll_dice()
+                rolls, glitch_report, exploded_report = result
+                await message.channel.send(f"Results: {rolls} \n {glitch_report} \n {exploded_report}")
+        else :
+            dice = dicemath.Dice(quantity, sides)
+            result = dice.roll_dice()
+            # SENDS BACK A DEFAULT MESSAGE TO THE CHANNEL.
+            await message.channel.send(f"Results: {result}")
 
 
 
