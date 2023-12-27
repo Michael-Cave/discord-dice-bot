@@ -6,7 +6,11 @@ load_dotenv()
 
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
-bot = discord.Client(intents=discord.Intents.default())
+# Sets intents and enables message content reading
+INTENTS = discord.Intents.default()
+INTENTS.message_content = True
+
+bot = discord.Client(intents=INTENTS)
 
 # EVENT LISTENER FOR WHEN THE BOT SWITCHES FROM OFFLINE TO ONLINE
 @bot.event
@@ -24,8 +28,10 @@ async def on_ready():
 # EVENT LISTENER FOR WHEN A NEW MESSAGE IS SENT TO A CHANNEL
 @bot.event
 async def on_message(message):
+    print(f"I've received a message: {message.content}")
     # CHECKS IF THE MESSAGE SENT IS "HELLO"
     if message.content == "hello":
+        print("Hello recieved")
         # SENDS BACK A MESSAGE TO THE CHANNEL.
         await message.channel.send("get fucked")
 
