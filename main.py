@@ -41,10 +41,13 @@ async def on_message(message):
         #Initializes the expected dice and rolls them
         if len(split_message) > 2:
             if split_message[2] == "Shadowrun":
-                dice = dicemath.Shadowrun(quantity, sides)
-                result = dice.roll_dice()
-                rolls, glitch_report, exploded_report = result
-                await message.channel.send(f"Results: {rolls} \n {glitch_report} \n {exploded_report}")
+                if sides != 6:
+                    await message.channel.send("Shadowrun exclusively uses a d6 dice pool.  Please try again with the correct dice.")
+                else :
+                    dice = dicemath.Shadowrun(quantity, sides)
+                    result = dice.roll_dice()
+                    rolls, glitch_report, exploded_report = result
+                    await message.channel.send(f"Results: {rolls} \n {glitch_report} \n {exploded_report}")
         else :
             dice = dicemath.Dice(quantity, sides)
             result = dice.roll_dice()

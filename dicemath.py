@@ -47,6 +47,7 @@ class Shadowrun(Dice):
         glitch_report = self.glitch_city()
         exploded_report = self.explosion()
 
+
         if glitch_report is None:
             glitch_report = "Good news!  You didn't glitch!"
         
@@ -75,7 +76,7 @@ class Shadowrun(Dice):
         if len(self._exploded_dice) == 0:
             pass
         else :
-            return f"If you had edged this roll you would have rolled an extra {len(self._exploded_dice)} dice for {self._exploded_dice}.  That would have netted you and additional {self._exploded_hits} hits."
+            return f"If you had Edged this roll you would have rolled an extra {len(self._exploded_dice)} dice for {self._exploded_dice}.  That would have netted you an additional {self._exploded_hits} hits."
 
 
 
