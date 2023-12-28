@@ -47,7 +47,7 @@ async def on_message(message):
                     dice = dicemath.Shadowrun(quantity, sides)
                     result = dice.roll_dice()
                     rolls, glitch_report, exploded_report = result
-                    await message.channel.send(f"Results: {rolls} \n {glitch_report} \n {exploded_report}")
+                    await message.channel.send(f"Results: {rolls}, {dice._hits} hits! \n {glitch_report} \n {exploded_report}")
         else :
             dice = dicemath.Dice(quantity, sides)
             result = dice.roll_dice()

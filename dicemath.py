@@ -69,8 +69,11 @@ class Shadowrun(Dice):
             pass
 
     def explode_dice(self):
-        self._exploded_dice.append(random.randrange(1, self._sides + 1))
+        explode = random.randrange(1, self._sides + 1)
+        self._exploded_dice.append(explode)
         self._exploding_dice -= 1
+        if explode == 6:
+            self._exploding_dice += 1
 
     def explosion(self):
         if len(self._exploded_dice) == 0:
