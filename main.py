@@ -40,6 +40,7 @@ async def on_message(message):
 
         #Initializes the expected dice and rolls them
         if len(split_message) > 2:
+            modifier = split_message[2]
             if split_message[2] == "Shadowrun":
                 if sides != 6:
                     await message.channel.send("Shadowrun exclusively uses a d6 dice pool.  Please try again with the correct dice.")
@@ -48,6 +49,24 @@ async def on_message(message):
                     result = dice.roll_dice()
                     rolls, glitch_report, exploded_report = result
                     await message.channel.send(f"Results: {rolls}, {dice._hits} hits! \n {glitch_report} \n {exploded_report}")
+            elif split_message[2] == "D&D":
+                dice = dicemath.Dungeons_and_dragons(quantity, sides)
+                result = dice.roll_dice()
+                if dice._critical != None:
+                    rolls, dice._critical, outcome = result
+                    await message.channel.send(f"Results: {rolls} \n {dice._critical} \n {outcome}")
+                else :
+                    rolls, outcome = result
+                    await message.channel.send(f"Results: {rolls} \n {outcome}")
+            elif split_message[3] == "D&D":
+                dice = dicemath.Dungeons_and_dragons(quantity, sides, modifier)
+                result = dice.roll_dice()
+                if dice._critical != None:
+                    rolls, dice._critical, outcome = result
+                    await message.channel.send(f"Results: {rolls} \n {dice._critical} \n {outcome}")
+                else :
+                    rolls, outcome = result
+                    await message.channel.send(f"Results: {rolls} \n {outcome}")
         else :
             dice = dicemath.Dice(quantity, sides)
             result = dice.roll_dice()
