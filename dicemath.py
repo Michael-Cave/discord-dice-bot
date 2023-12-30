@@ -84,19 +84,29 @@ class Shadowrun(Dice):
 
 # Dungeons and Dragons behavior and rolls
 class Dungeons_and_dragons(Dice):
-    def __init__(self, num_dice, sides, mod=None):
+    def __init__(self, num_dice, sides, mod=None, adv=False, disadv=False):
         super().__init__(num_dice, sides)
         self._mod = mod
         self._positive_mod = True
         self._split_mod = []
         self._critical = None
         self._total = 0
+        self._adv = adv
+        self._disadv = disadv
 
     def roll_dice(self):
         # Rolls and stores the called for roll
         rolls = super().roll_dice()
         for i in rolls:
             self._total += i
+
+        # Check for advantage and executes
+        if self._adv == True:
+            return self.advantage(rolls)
+
+        # Checks for disadvantage and executes
+        if self._disadv == True:
+            return self.disadvantage(rolls)
 
         # Checks for a critical hit or miss
         if self._sides == 20 and self._num_dice == 1:
@@ -133,4 +143,78 @@ class Dungeons_and_dragons(Dice):
                 return rolls, self._critical, outcome
             else :
                 return rolls, outcome
+            
+
+    # Helper function for roll_dice, handles advantage
+    def advantage(self, rolls):
+        if self._adv == True:
+            highest = max(rolls)
+            if highest == 20:
+                self._critical = "Nat 20 baby!"
+            if highest == 1:
+                self._critical = "Nat 1... You had a 1 in 400 chance and yet you still rolled double ones..."
+            if self._mod != None:
+                if self._mod[0] != "+" and self._mod[0] != "-":
+                    if self._critical != None:
+                        return rolls, highest, self._critical, "Modifiers in D&D are either a plus or a minus, not whatever it is you just tried to do..."
+                    else :
+                        return rolls, highest, "Modifiers in D&D are either a plus or a minus, not whatever it is you just tried to do..."
+                else :
+                    if self._mod[0] == "+":
+                        self._split_mod = self._mod.split("+")
+                    if self._mod[0] == "-":
+                        self._positive_mod = False
+                        self._split_mod = self._mod.split("-")
+                    modifier = int(self._split_mod[1])
+                    if self._positive_mod == True:
+                        outcome = f"You rolled {self._num_dice}d{self._sides} plus {modifier} and kept the highest [{highest}] for a total of {highest + modifier}."
+                    if self._positive_mod == False:
+                        outcome = f"You rolled {self._num_dice}d{self._sides} minus {modifier} and kept the highest [{highest}]for a total of {highest - modifier}."
+                    if self._critical != None:
+                        return rolls, self._critical, outcome
+                    else :
+                        return rolls, outcome
+            else :
+                outcome = f"You rolled {self._num_dice}d{self._sides} and kept the highest [{highest}]."
+                if self._critical != None:
+                    return rolls, self._critical, outcome
+                else :
+                    return rolls, outcome
+                
+
+    # Helper function for roll_dice, handles disadvantage
+    def disadvantage(self, rolls):
+        if self._disadv == True:
+            lowest = min(rolls)
+            if lowest == 20:
+                self._critical = "Nat 20 baby! Yoiu had a 1 in 400 chance and you somehow manage to pull it off!"
+            if lowest == 1:
+                self._critical = "Nat 1... I hope that wasn't an important roll.."
+            if self._mod != None:
+                if self._mod[0] != "+" and self._mod[0] != "-":
+                    if self._critical != None:
+                        return rolls, lowest, self._critical, "Modifiers in D&D are either a plus or a minus, not whatever it is you just tried to do..."
+                    else :
+                        return rolls, lowest, "Modifiers in D&D are either a plus or a minus, not whatever it is you just tried to do..."
+                else :
+                    if self._mod[0] == "+":
+                        self._split_mod = self._mod.split("+")
+                    if self._mod[0] == "-":
+                        self._positive_mod = False
+                        self._split_mod = self._mod.split("-")
+                    modifier = int(self._split_mod[1])
+                    if self._positive_mod == True:
+                        outcome = f"You rolled {self._num_dice}d{self._sides} plus {modifier} and kept the lowest [{lowest}] for a total of {lowest + modifier}."
+                    if self._positive_mod == False:
+                        outcome = f"You rolled {self._num_dice}d{self._sides} minus {modifier} and kept the lowest [{lowest}]for a total of {lowest - modifier}."
+                    if self._critical != None:
+                        return rolls, self._critical, outcome
+                    else :
+                        return rolls, outcome
+            else :
+                outcome = f"You rolled {self._num_dice}d{self._sides} and kept the lowest [{lowest}]."
+                if self._critical != None:
+                    return rolls, self._critical, outcome
+                else :
+                    return rolls, outcome
         

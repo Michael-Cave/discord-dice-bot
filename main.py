@@ -58,6 +58,27 @@ async def on_message(message):
                 else :
                     rolls, outcome = result
                     await message.channel.send(f"Results: {rolls} \n {outcome}")
+            
+            elif split_message[2] == "Advantage":
+                dice = dicemath.Dungeons_and_dragons(quantity, sides, adv=True)
+                result = dice.roll_dice()
+                if dice._critical != None:
+                    rolls, dice._critical, outcome = result
+                    await message.channel.send(f"Results: {rolls} \n {dice._critical} \n {outcome}")
+                else :
+                    rolls, outcome = result
+                    await message.channel.send(f" Results: {rolls} \n {outcome}")
+
+            elif split_message[2] == "Disadvantage":
+                dice = dicemath.Dungeons_and_dragons(quantity, sides, disadv=True)
+                result = dice.roll_dice()
+                if dice._critical != None:
+                    rolls, dice._critical, outcome = result
+                    await message.channel.send(f"Results: {rolls} \n {dice._critical} \n {outcome}")
+                else :
+                    rolls, outcome = result
+                    await message.channel.send(f" Results: {rolls} \n {outcome}")
+
             elif split_message[3] == "D&D":
                 dice = dicemath.Dungeons_and_dragons(quantity, sides, modifier)
                 result = dice.roll_dice()
@@ -67,6 +88,26 @@ async def on_message(message):
                 else :
                     rolls, outcome = result
                     await message.channel.send(f"Results: {rolls} \n {outcome}")
+            
+            elif split_message[3] == "Advantage":
+                dice = dicemath.Dungeons_and_dragons(quantity, sides, modifier, True)
+                result = dice.roll_dice()
+                if dice._critical != None:
+                    rolls, dice._critical, outcome = result
+                    await message.channel.send(f"Results: {rolls} \n {dice._critical} \n {outcome}")
+                else :
+                    rolls, outcome = result
+                    await message.channel.send(f" Results: {rolls} \n {outcome}")
+
+            elif split_message[3] == "Disadvantage":
+                dice = dicemath.Dungeons_and_dragons(quantity, sides, modifier, disadv=True)
+                result = dice.roll_dice()
+                if dice._critical != None:
+                    rolls, dice._critical, outcome = result
+                    await message.channel.send(f"Results: {rolls} \n {dice._critical} \n {outcome}")
+                else :
+                    rolls, outcome = result
+                    await message.channel.send(f" Results: {rolls} \n {outcome}")
         else :
             dice = dicemath.Dice(quantity, sides)
             result = dice.roll_dice()
